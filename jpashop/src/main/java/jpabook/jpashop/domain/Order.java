@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -23,6 +24,11 @@ public class Order {
 	@ManyToOne
 	@JoinColumn(name = "MEMBER_ID")
 	private Member member;
+
+	// Delivery-Order(FK 보유) 1대1
+	@OneToOne
+	@JoinColumn(name = "DELIVERY_ID")
+	private Delivery delivery;
 	private LocalDateTime orderDate;
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
