@@ -8,12 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import jpabook.jpashop.domain.item.Item;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderItem {
 
 	@Id @GeneratedValue
@@ -29,4 +32,27 @@ public class OrderItem {
 	private Order order;
 	private int orderPrice;
 	private int count;
+
+	/* 생성 메서드 */
+	public static OrderItem createOrderItem(Item item, int orderPrice, int count) {
+		OrderItem orderItem = new OrderItem();
+		orderItem.setItem(item);
+		orderItem.setOrderPrice(orderPrice);
+		orderItem.setCount(count);
+
+		item.removeStock(count);
+		return orderItem;
+	}
+
+	/* 비즈니스 로직 */
+	// 필드 변수에 바로 접근할 수 있더라도 메서드(getter)를 통해서 접근하는걸 권장하심(프록시 사용될때 문제되지 않도록..?)
+	public void cancel() {
+		getItem().addStock(count);
+	}
+
+	/* 조회 로직 */
+	public int getTotalPrice() {
+		return getOrderPrice() * getCount();
+	}
+
 }
