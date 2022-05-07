@@ -47,7 +47,7 @@ public class OrderRepository {
 			jpql += " m.name like :name";
 		}
 		TypedQuery<Order> query = em.createQuery(jpql, Order.class)
-			.setMaxResults(1000); //최대 1000건
+									.setMaxResults(1000); //최대 1000건
 		if (orderSearch.getOrderStatus() != null) {
 			query = query.setParameter("status", orderSearch.getOrderStatus());
 		}
@@ -57,4 +57,21 @@ public class OrderRepository {
 		return query.getResultList();
 	}
 
+	// V4에 비해 쿼리 성능은 쪼끔 떨어지지만 재사용성이 좋다
+	public List<Order> findAllWithMemberDelivery() {
+		return em.createQuery("select o from Order o" +
+							  " join fetch o.member m" +
+							  " join fetch o.delivery d", Order.class)
+				 .getResultList();
+	}
+
+	// Repository는 가급적이면 순수 엔티티를 조회하는데만 사용하자. 성능최적화를 위해 DTO 조회가 필요할 경우 따로 Repository를 만든다.
+//	public List<OrderSimpleQueryDto> findOrderDtos() {
+//		return em.createQuery(
+//					 "select new jpabook.jpashop.repository.order.simpleQuery.OrderSimpleQueryDto(o.id, m.name, o.orderDate, o.status, d.address)" +
+//					 " from Order o" +
+//					 " join o.member m" +
+//					 " join o.delivery d", OrderSimpleQueryDto.class)
+//				 .getResultList();
+//	}
 }
