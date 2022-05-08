@@ -1,21 +1,22 @@
-package jpabook.jpashop.repository.order.simpleQuery;
+package jpabook.jpashop.repository.order.query;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.OrderStatus;
 import lombok.Data;
 
 @Data
-public class OrderSimpleQueryDto {
+public class OrderQueryDto {
 
 	private Long orderId;
 	private String name;
 	private LocalDateTime orderDate;
 	private OrderStatus orderStatus;
 	private Address address;
+	private List<OrderItemQueryDto> orderItems;
 
-	// DTO에서 엔티티를 인자로 받는건 문제가 되지 않는다~~
-	public OrderSimpleQueryDto(Long orderId, String name, LocalDateTime orderDate,
+	public OrderQueryDto(Long orderId, String name, LocalDateTime orderDate,
 		OrderStatus orderStatus, Address address) {
 		this.orderId = orderId;
 		this.name = name;

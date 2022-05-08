@@ -57,11 +57,35 @@ public class OrderRepository {
 		return query.getResultList();
 	}
 
-	// V4에 비해 쿼리 성능은 쪼끔 떨어지지만 재사용성이 좋다
+	// SimpleV4에 비해 쿼리 성능은 쪼끔 떨어지지만 재사용성이 좋다
 	public List<Order> findAllWithMemberDelivery() {
 		return em.createQuery("select o from Order o" +
 							  " join fetch o.member m" +
 							  " join fetch o.delivery d", Order.class)
+				 .getResultList();
+	}
+
+	// OrderApi V3
+	public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+		// ToOne 관계인 데이터는 전부 fetch join으로 당겨온다.(ToOne 관계 안에 또 ToOne 관계가 있으면 걔도 마찬가지)
+		// ToMany 인 애들은 fetch join을 하지 않고 지연 로딩으로 냅두고, 대신 `default_batch_fetch_size` 옵션을 적용한다
+		// `default_batch_fetch_size` 옵션을 통해 컬렉션 형태의 데이터를 `in` 쿼리를 통해 미리 가져온다
+		// 그리고 ToOne 관계에만 fetch join을 썼기 때문에 페이징도 가능하다!
+		return em.createQuery("select o from Order o" +
+							  " join fetch o.member m" +
+							  " join fetch o.delivery d", Order.class)
+				 .setFirstResult(offset)
+				 .setMaxResults(limit)
+				 .getResultList();
+	}
+
+	public List<Order> findAllWithItem() {
+		// distinct 를 붙이지 않으면 중복 데이터가 생긴다.
+		return em.createQuery("select distinct o from Order o" +
+							  " join fetch o.member m" +
+							  " join fetch o.delivery d" +
+							  " join fetch o.orderItems oi" +
+							  " join fetch oi.item i", Order.class)
 				 .getResultList();
 	}
 
