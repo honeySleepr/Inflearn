@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/datajpa
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        #show_sql: true (로그로 출력되도록 설정하는게 낫다 - 밑에서 `org.hibernate.SQL: debug`로 설정해줌)
+        format_sql: true
+logging.level:
+  org.hibernate.SQL: debug
+  #org.hibernate.type: trace (파라미터 바인딩 데이터를 볼 수 있다. 그런데 보기가 좀 불편해서 p6spy로 대신한)
