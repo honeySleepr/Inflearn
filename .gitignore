@@ -1,1 +1,4 @@
-.DS_Store
+*
+!Spring-core-basic/
+!Spring-core-basic/**
+
