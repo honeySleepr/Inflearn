@@ -1,9 +1,9 @@
 package inflearn.springcorebasic.order;
 
+import inflearn.springcorebasic.AppConfig;
 import inflearn.springcorebasic.member.Grade;
 import inflearn.springcorebasic.member.Member;
 import inflearn.springcorebasic.member.MemberService;
-import inflearn.springcorebasic.member.MemberServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,8 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 class OrderServiceTest {
 
-	MemberService memberService = new MemberServiceImpl();
-	OrderService orderService = new OrderServiceImpl();
+	private final MemberService memberService;
+	private final OrderService orderService;
+
+	public OrderServiceTest() {
+		AppConfig appConfig = new AppConfig();
+		this.memberService = appConfig.memberService();
+		this.orderService = appConfig.orderService();
+	}
 
 	@Test
 	void createOrder() {

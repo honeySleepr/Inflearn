@@ -3,13 +3,16 @@ package inflearn.springcorebasic;
 import inflearn.springcorebasic.member.Grade;
 import inflearn.springcorebasic.member.Member;
 import inflearn.springcorebasic.member.MemberService;
-import inflearn.springcorebasic.member.MemberServiceImpl;
 
 public class MemberApp {
 
 	public static void main(String[] args) {
+
+		/* AppConfig가 공연관리자 역할을 한다. 의존관계를 주입해준다 */
+		AppConfig appconfig = new AppConfig();
+		MemberService memberService = appconfig.memberService();
 		Long id = 1L;
-		MemberService memberService = new MemberServiceImpl();
+
 		Member member = new Member(id, "memberA", Grade.VIP);
 		memberService.join(member);
 
