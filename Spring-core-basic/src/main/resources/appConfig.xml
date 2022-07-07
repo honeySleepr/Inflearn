@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.springframework.org/schema/beans"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+  <bean class="inflearn.springcorebasic.member.MemberServiceImpl" id="memberService">
+    <constructor-arg name="memberRepository" ref="memberRepository"/>
+  </bean>
+  <bean class="inflearn.springcorebasic.member.MemoryMemberRepository"
+    id="memberRepository"/>
+  <bean class="inflearn.springcorebasic.order.OrderServiceImpl" id="orderService">
+    <constructor-arg name="memberRepository" ref="memberRepository"/>
+    <constructor-arg name="discountPolicy" ref="discountPolicy"/>
+  </bean>
+  <bean class="inflearn.springcorebasic.discount.RateDiscountPolicy" id="discountPolicy"/>
+
+</beans>
