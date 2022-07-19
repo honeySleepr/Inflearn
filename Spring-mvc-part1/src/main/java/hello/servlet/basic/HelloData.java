@@ -1,10 +1,13 @@
 package hello.servlet.basic;
 
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
 public class HelloData {
 
 	private String username;
