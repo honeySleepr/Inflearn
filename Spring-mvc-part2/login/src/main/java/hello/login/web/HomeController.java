@@ -2,6 +2,7 @@ package hello.login.web;
 
 import hello.login.domain.member.Member;
 import hello.login.domain.member.MemberRepository;
+import hello.login.web.argumentresolver.Login;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -55,9 +56,20 @@ public class HomeController {
 		return "loginHome";
 	}
 
-	@GetMapping("/")
-	public String homeLoginV4(
+	//	@GetMapping("/")
+	public String homeLoginV4Spring(
 		@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, Model model) {
+
+		if (loginMember == null) {
+			return "home";
+		}
+
+		model.addAttribute("member", loginMember);
+		return "loginHome";
+	}
+
+	@GetMapping("/")
+	public String homeLoginV4ArgumentResolver(@Login Member loginMember, Model model) {
 
 		if (loginMember == null) {
 			return "home";
